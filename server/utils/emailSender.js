@@ -9,14 +9,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async ({ email, subject, otp }) => {
-  const html = emailVerificationTemplate({
-    otp,
-    brandName: "69e-commerce",
-  });
-
+const sendEmail = async ({ email, subject, otp, links, html }) => {
   await transporter.sendMail({
-    from: `"69e-commerce" <${process.env.APP_EMAIL}>`,
+    from: `"shop69" <${process.env.APP_EMAIL}>`,
     to: email,
     subject,
     html,

@@ -4,12 +4,15 @@ const {
   login,
   verifyOtp,
   resendOtp,
+  forgetPassword,
 } = require("../controllers/authController");
+
 const route = express.Router();
 
 route.post("/signup", registration);
 route.post("/verifyotp", verifyOtp);
 route.post("/resendotp", resendOtp);
 route.post("/signin", login);
+route.post("/forgetpassword", forgetPassword);
 
 module.exports = route;

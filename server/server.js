@@ -5,9 +5,11 @@ const dbConfig = require("./db/dbConfig");
 require("dotenv").config();
 const cors = require("cors");
 const route = require("./routes/route");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 dbConfig();
 app.use(route);
