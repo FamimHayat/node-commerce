@@ -6,7 +6,9 @@ const {
   generateAccessToken,
   generateRefreshToken,
   generateResetPasswordToken,
-} = require("../utils/helper");
+  verifyToken,
+  verifyResetPassToken,
+} = require("../utils/tokens");
 const {
   emailVerificationTemplate,
   forgotPasswordTemplate,
@@ -54,7 +56,7 @@ const registration = async (req, res) => {
     res.status(201).send({ success: "registration successful..!" });
   } catch (error) {
     res.status(500).send({ error: "500 : internal server error..!" });
-    console.log(`registrationController: ${error}`);
+    console.log(`registrationController: from authController ${error}`);
   }
 };
 
@@ -113,7 +115,7 @@ const resendOtp = async (req, res) => {
     res.status(201).send({ success: "a new otp has send to your email..!" });
   } catch (error) {
     res.status(500).send({ error: "500 : internal server error..!" });
-    console.log(`resendOtp: ${error}`);
+    console.log(`resendOtpController: from authController ${error}`);
   }
 };
 
@@ -156,7 +158,7 @@ const login = async (req, res) => {
     res.status(200).send({ success: "logged in successfully..!" });
   } catch (error) {
     res.status(500).send({ error: "500 : internal server error..!" });
-    console.log(`loginController: ${error}`);
+    console.log(`loginController: from authController ${error}`);
   }
 };
 
@@ -169,9 +171,24 @@ const forgetPassword = async (req, res) => {
       return res.status(400).send({ error: "enter a valid email..!" });
 
     const existingUser = await users.findOne({ email });
+
+    if (
+      existingUser.resetPassTokenExp &&
+      existingUser.resetPassTokenExp.getTime() > Date.now()
+    )
+      return res
+        .status(400)
+        .send({ error: "reset password email already send to your mail..!" });
     if (!existingUser)
       return res.status(400).send({ error: "email is not verified yet..!" });
-    const resetPassToken = generateResetPasswordToken(existingUser);
+    const { resetHashedToken, resetPassToken } = generateResetPasswordToken();
+    console.log(resetHashedToken, resetPassToken);
+
+    existingUser.resetPassToken = resetHashedToken;
+    existingUser.resetPassTokenExp = Date.now() + 120 * 60 * 1000;
+
+    existingUser.save();
+
     const resetPasswordLink = `${
       process.env.CLIENT_URL || "http://localhost:6969"
     }/resetpass/?sec=${resetPassToken}`;
@@ -179,17 +196,51 @@ const forgetPassword = async (req, res) => {
     sendEmail({
       email,
       subject: "reset password..!",
-      links: resetPasswordLink,
       html: forgotPasswordTemplate({
         brandName: "69e-commerce",
+        links: resetPasswordLink,
       }),
     });
 
     res.status(200).send({ error: "email send successfully..!" });
   } catch (error) {
     res.status(500).send({ error: "500 : internal server error..!" });
-    console.log(`forgetPassController: from authcontroller ${error}`);
+    console.log(`forgetPassController: from authController ${error}`);
   }
 };
 
-module.exports = { registration, login, verifyOtp, resendOtp, forgetPassword };
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    if (!token) return res.status(400).send({ error: "invalid request..!" });
+    const decoded = verifyResetPassToken(token);
+    if (!decoded) return res.status(400).send({ error: "invalid request..!" });
+    const user = await users.findOne({ resetPassToken: decoded });
+    if (!user) return res.status(400).send({ error: "invalid request..!" });
+
+    if (user.resetPassToken !== decoded)
+      return res.status(400).send({ error: "invalid request..!" });
+
+    user.password = newPassword;
+    user.resetPassToken = "";
+    user.resetPassTokenExp = null;
+    user.save();
+    return res
+      .status(200)
+      .send({ success: "password changed successfully..!" });
+  } catch (error) {
+    res.status(500).send({ error: "500 : internal server error..!" });
+    console.log(`resetPassController: from authController ${error}`);
+  }
+};
+
+module.exports = {
+  registration,
+  login,
+  verifyOtp,
+  resendOtp,
+  forgetPassword,
+  resetPassword,
+};

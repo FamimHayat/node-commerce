@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-const { emailVerificationTemplate } = require("./templates");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -9,7 +8,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async ({ email, subject, otp, links, html }) => {
+const sendEmail = async ({ email, subject, otp, html }) => {
   await transporter.sendMail({
     from: `"shop69" <${process.env.APP_EMAIL}>`,
     to: email,
