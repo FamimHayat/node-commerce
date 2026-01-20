@@ -50,7 +50,7 @@ const verifyResetPassToken = (token) => {
 const verifyToken = (token) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SEC);
-    console.log(decoded);
+
     return decoded;
   } catch (error) {
     console.log(error);

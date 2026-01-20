@@ -1,4 +1,4 @@
-const { verifyToken } = require("../utils/helper");
+const { verifyToken } = require("../utils/tokens");
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -9,7 +9,6 @@ const authMiddleware = async (req, res, next) => {
     const decoded = verifyToken(token.ACCESS_TOKEN);
     if (!decoded) return res.status(400).send({ error: "invalid request..!" });
     req.user = decoded;
-    console.log(decoded);
 
     next();
   } catch (error) {
@@ -18,4 +17,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = { authMiddleware };
+module.exports = authMiddleware;

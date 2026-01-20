@@ -75,11 +75,12 @@ const verifyOtp = async (req, res) => {
       return res.status(400).send({ error: "invalid or expired otp..!" });
     user.isVerified = true;
     user.otp = null;
+    user.otpExpires = null;
     user.save();
     res.status(200).send({ success: "verification successful..!" });
   } catch (error) {
     res.status(500).send({ error: "500 : internal server error..!" });
-    console.log(`verifyOtp: ${error}`);
+    console.log(`verifyOtp: from authController ${error}`);
   }
 };
 
@@ -236,6 +237,47 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const getProfile = async (req, res) => {
+  try {
+    const userProfile = await users
+      .findById(req.user._id)
+      .select(
+        "-password -otp -otpExpires -resetPassToken -resetPassTokenExp -updatedAt"
+      );
+    if (!userProfile)
+      return res.status(400).send({ error: "user data not found..!" });
+
+    res.status(200).send({ userProfile });
+  } catch (error) {
+    res.status(500).send({ error: "500 : internal server error..!" });
+    console.log(`getProfileController: from authController ${error}`);
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const { fullName, phone, address } = req.body;
+
+    const avatar = req.file;
+    console.log("avatar =>", avatar);
+
+    const user = req.user._id;
+    const updateFields = {};
+
+    if (avatar) updateFields.avatar = avatar;
+    if (fullName) updateFields.fullName = fullName;
+    if (phone) updateFields.phone = phone;
+    if (address) updateFields.address = address;
+
+    const existingUser = await users.findByIdAndUpdate(user, updateFields, {
+      new: true,
+    });
+  } catch (error) {
+    res.status(500).send({ error: "500 : internal server error..!" });
+    console.log(`updateProfileController: from authController ${error}`);
+  }
+};
+
 module.exports = {
   registration,
   login,
@@ -243,4 +285,6 @@ module.exports = {
   resendOtp,
   forgetPassword,
   resetPassword,
+  getProfile,
+  updateProfile,
 };
