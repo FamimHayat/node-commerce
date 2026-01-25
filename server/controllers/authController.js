@@ -14,6 +14,10 @@ const {
   forgotPasswordTemplate,
 } = require("../utils/templates");
 const isValidEmail = require("../utils/validations");
+const {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+} = require("../cloudinary/cloudinaryService");
 
 const registration = async (req, res) => {
   try {
@@ -257,24 +261,62 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const { fullName, phone, address } = req.body;
-
+    const userId = req.user._id;
     const avatar = req.file;
-    console.log("avatar =>", avatar);
 
-    const user = req.user._id;
-    const updateFields = {};
+    const user = await users
+      .findById(userId)
+      .select(
+        "-password -otp -otpExpires -resetPassToken -resetPassTokenExp -updatedAt"
+      );
 
-    if (avatar) updateFields.avatar = avatar;
-    if (fullName) updateFields.fullName = fullName;
-    if (phone) updateFields.phone = phone;
-    if (address) updateFields.address = address;
+    if (avatar) {
+      if (user.avatar) {
+        const publicId = user.avatar.split("/").pop().split(".")[0];
+        console.log(publicId);
+        deleteFromCloudinary(publicId);
+      }
+      const imageFile = await uploadToCloudinary(avatar, "avatar");
+      user.avatar = imageFile?.secure_url;
+    }
 
-    const existingUser = await users.findByIdAndUpdate(user, updateFields, {
-      new: true,
-    });
+    if (fullName) user.fullName = fullName;
+    if (phone) user.phone = phone;
+    if (address) user.address = address;
+
+    user.save();
+
+    res.send("image uploaded");
   } catch (error) {
     res.status(500).send({ error: "500 : internal server error..!" });
     console.log(`updateProfileController: from authController ${error}`);
+  }
+};
+
+const refreshAccessToken = async (req, res) => {
+  try {
+    const refreshToken =
+      req.cookies?.REFRESH_TOKEN || req.headers.authorization;
+
+    if (!refreshToken)
+      return res.status(400).send({ error: "invalid token..!" });
+    const decoded = verifyToken(refreshToken);
+    if (!decoded)
+      return res.status(400).send({ error: "user data not found..!" });
+
+    const accessToken = generateAccessToken(decoded);
+    res.cookie("ACCESS_TOKEN", accessToken, {
+      maxAge: 3600000,
+      httpOnly: false,
+      secure: false,
+      // sameSite: "None",
+    });
+    return res
+      .status(201)
+      .send({ success: "token created successfully..!", accessToken });
+  } catch (error) {
+    res.status(500).send({ error: "500 : internal server error..!" });
+    console.log(`refreshAccessTokenController: from authController ${error}`);
   }
 };
 
@@ -287,4 +329,5 @@ module.exports = {
   resetPassword,
   getProfile,
   updateProfile,
+  refreshAccessToken,
 };

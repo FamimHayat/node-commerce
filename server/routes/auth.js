@@ -10,6 +10,7 @@ const {
   resetPassword,
   getProfile,
   updateProfile,
+  refreshAccessToken,
 } = require("../controllers/authController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -23,5 +24,6 @@ route.post("/forgetpassword", forgetPassword);
 route.post("/resetpassword/:token", resetPassword);
 route.get("/profile", authMiddleware, getProfile);
 route.put("/profile", authMiddleware, upload.single("avatar"), updateProfile);
+route.post("/refreshtoken", refreshAccessToken);
 
 module.exports = route;

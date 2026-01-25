@@ -3,6 +3,9 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
+    avatar: {
+      type: String,
+    },
     fullName: {
       type: String,
       trim: true,
