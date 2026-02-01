@@ -23,6 +23,7 @@ const createProduct = async (req, res) => {
       return res.status(400).send({ error: "product price is required..!" });
 
     console.log(req.file);
+
     console.log(req.files);
 
     res.status(201).send({ success: "product was created successfully..!" });

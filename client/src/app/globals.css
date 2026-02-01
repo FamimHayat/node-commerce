@@ -3,6 +3,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* ✅ subtle shadow for light mode (dark text) */
+  --text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.432);
+}
+
+.container {
+  margin: 0 auto;
+}
+
+/* ✅ dark mode override controlled by class on <html> */
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  /* ✅ subtle glow shadow for dark mode (light text) */
+  --text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.459);
 }
 
 @theme inline {
@@ -12,15 +28,28 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+/* ✅ Text Shadow Utility Class */
+.text-shadow {
+  text-shadow: var(--text-shadow);
+}
+
+/* Hide scrollbar for Chrome, Safari and Edge */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE / old Edge */
+body {
+  -ms-overflow-style: none;
 }

@@ -1,13 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import Providers from "./(components)/utils/ThemeProvider";
+import Navbar from "./(components)/nav/NavBar";
+import BackToTop from "./(components)/utils/BackToTop";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Jakarta Font Setup
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
 });
 
@@ -18,11 +17,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${jakarta.variable} antialiased`}>
+        <Providers>
+          <Navbar />
+          {children}
+          <BackToTop />
+        </Providers>
       </body>
     </html>
   );
