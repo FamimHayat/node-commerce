@@ -5,13 +5,19 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      require: true,
+      unique: true,
+    },
+
     description: {
       type: String,
       required: true,
     },
     category: {
       type: mongoose.Types.ObjectId,
-      ref: "user",
+      ref: "category",
       required: true,
     },
     price: {
@@ -46,16 +52,12 @@ const productSchema = new mongoose.Schema(
         },
       },
     ],
-    tags: {
-      type: Array,
-    },
+    tags: [{ type: String }],
     thumbnail: {
       type: String,
       required: true,
     },
-    images: {
-      type: Array,
-    },
+    images: [{ type: String }],
     isActive: {
       type: Boolean,
       default: true,
@@ -64,4 +66,4 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("category", productSchema);
+module.exports = mongoose.model("products", productSchema);

@@ -7,7 +7,6 @@ export default function MobileSearchSheet({ open, closeSearch }) {
         open ? "visible" : "invisible"
       }`}
     >
-      {/* Overlay */}
       <div
         onClick={closeSearch}
         className={`absolute inset-0 bg-black/40 ${
@@ -15,19 +14,18 @@ export default function MobileSearchSheet({ open, closeSearch }) {
         }`}
       />
 
-      {/* Search Box */}
       <div
-        className={`absolute top-0 left-0 w-full bg-foreground p-4 transition-transform duration-300 ${
+        className={`absolute top-0 left-0 w-full bg-foreground p-3 transition-transform duration-300 ${
           open ? "translate-y-0" : "-translate-y-full"
         }`}
       >
         <div className="flex items-center gap-2">
-          <FiSearch size={20} className="text-background" />
+          <FiSearch size={30} className="text-background" />
 
           <input
             autoFocus
             placeholder="Search products..."
-            className="flex-1 border border-background text-background rounded-full px-4 py-2 focus:outline-none"
+            className="flex-1 border-2 border-background/60 text-background rounded-full px-4 py-3 focus:outline-none"
           />
 
           <button onClick={closeSearch}>

@@ -25,10 +25,10 @@ export default function Navbar() {
       {/* Always overlay on top */}
       <header
         className={[
-          "fixed top-0 left-0 w-full z-50 transition-all duration-300",
+          "fixed top-0 left-0 w-full z-50 transition-all pb-1 bg-background duration-300",
           scrolled
-            ? "bg-background backdrop-blur  shadow-md"
-            : "bg-transparent",
+            ? "pt-1 md:pt-3 pb-2 md:pb-5 border-b-2 button-shadow border-foreground/30"
+            : "border-b-2 border-transparent",
         ].join(" ")}
       >
         <nav className="mx-auto px-4 h-16 flex items-center justify-between">

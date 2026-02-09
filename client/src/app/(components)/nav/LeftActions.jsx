@@ -11,7 +11,7 @@ export default function LeftActions({
       {/* Menu Button */}
       <button
         onClick={openMenu}
-        className="hidden md:flex p-2 rounded-full border transition-all hover:bg-foreground hover:text-background cursor-pointer"
+        className="hidden md:flex p-1.5 border-2 border-foreground/70 rounded-full  transition-all hover:bg-foreground hover:text-background cursor-pointer"
       >
         <FiMenu size={20} />
       </button>
@@ -19,14 +19,14 @@ export default function LeftActions({
       {/* Search Button */}
       <button
         onClick={openSearch}
-        className="p-2 rounded-full border transition-all hover:bg-foreground hover:text-background cursor-pointer"
+        className="p-1.5 border-2 border-foreground/70 rounded-full  transition-all hover:bg-foreground hover:text-background cursor-pointer"
       >
         <FiSearch size={20} />
       </button>
 
       <button
         onClick={openMenu}
-        className="md:hidden p-2 rounded-full border transition-all hover:bg-foreground hover:text-background cursor-pointer"
+        className="md:hidden p-1.5 border-2 border-foreground/70 rounded-full transition-all hover:bg-foreground hover:text-background cursor-pointer"
       >
         <FiMenu size={20} />
       </button>

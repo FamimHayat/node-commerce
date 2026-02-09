@@ -1,32 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FiHeart } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa6";
 
 export default function ProductCard({
   href = "/product/floral-jacquard-skirt",
   image = "/product.webp",
   title = "geometric shirt",
-  price = "19,300 AED",
+  price = "৳ 2000",
 
   imgWidth = 1200,
   imgHeight = 1600,
 }) {
   return (
     <div className="w-full bg-background group">
-      {/* Image Container */}
       <div className="relative w-full">
-        {/* Heart Icon */}
         <button
           type="button"
           aria-label="Add to wishlist"
-          className="absolute top-3 right-3 z-30 p-2 rounded-full hover:bg-black/10 transition"
+          className="absolute top-3 right-3 z-30  rounded-full  cursor-pointer"
         >
-          <FiHeart size={18} />
+          <FaHeart
+            size={28}
+            className="text-black/80 duration-200 hover:text-red-500"
+          />
         </button>
 
-        {/* ✅ Full Image Link */}
         <Link href={href} className="block relative w-full">
-          {/* ✅ Responsive Image */}
           <Image
             src={image}
             alt={title}
@@ -36,7 +36,6 @@ export default function ProductCard({
             className="w-full h-auto object-cover"
           />
 
-          {/* Blur Overlay */}
           <div
             className="
               absolute inset-0
@@ -58,7 +57,6 @@ export default function ProductCard({
         </Link>
       </div>
 
-      {/* Text Content */}
       <div className="pt-3 text-foreground">
         <Link href={href}>
           <p className="text-sm sm:text-base leading-snug">{title}</p>

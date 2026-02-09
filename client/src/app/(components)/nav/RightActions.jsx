@@ -12,14 +12,14 @@ export default function RightActions({ mobileOnly = false }) {
 
       <Link
         href="/contact"
-        className=" items-center gap-1 px-2 py-2 rounded-full border transition-all hover:bg-foreground hover:text-background"
+        className="p-1.5 border-2 border-foreground/70 rounded-full  transition-all hover:bg-foreground hover:text-background"
       >
-        <FiPhone size={18} />
+        <FiPhone size={20} />
       </Link>
 
       <Link
         href="/account"
-        className="p-2 rounded-full border transition-all hover:bg-foreground hover:text-background"
+        className="p-1.5 border-2 border-foreground/70 rounded-full  transition-all hover:bg-foreground hover:text-background"
       >
         <FiUser size={20} />
       </Link>

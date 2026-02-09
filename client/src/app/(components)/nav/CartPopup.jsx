@@ -117,7 +117,7 @@ export default function CartPopup() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="p-2 rounded-full border transition-all hover:bg-foreground hover:text-background relative cursor-pointer"
+        className="p-1.5 rounded-full border-2 border-foreground/70 bg-background text-foreground hover:bg-foreground hover:text-background   transition-all relative cursor-pointer"
         aria-label="Open cart"
       >
         <FiShoppingCart size={20} />
@@ -130,27 +130,24 @@ export default function CartPopup() {
         )}
       </button>
 
-      {/* Dropdown panel */}
+      {/* Popup Panel */}
       <div
         className={[
-          // ✅ Mobile: fixed to screen right
           "fixed right-2 top-16 w-[calc(100vw-1rem)] max-w-sm",
-          // ✅ Desktop: back to button anchor
           "md:absolute md:right-0 md:top-auto md:mt-3 md:w-[92vw]",
-
           "origin-top-right transition-all duration-200 z-50",
           open
             ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
             : "opacity-0 scale-95 -translate-y-1 pointer-events-none",
         ].join(" ")}
       >
-        <div className="rounded-2xl border bg-background shadow-xl overflow-hidden">
+        <div className="rounded-2xl border border-background/50 bg-foreground text-background shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-background/50">
             <p className="font-semibold">Your Cart</p>
             <button
               type="button"
-              className="p-2 rounded-full border hover:bg-foreground hover:text-background transition-all cursor-pointer"
+              className="p-2 rounded-full border border-background/50 hover:bg-background hover:text-foreground transition-all cursor-pointer"
               onClick={() => setOpen(false)}
               aria-label="Close cart"
             >
@@ -161,11 +158,9 @@ export default function CartPopup() {
           {/* Body */}
           <div className="max-h-[55vh] overflow-auto">
             {items.length === 0 ? (
-              <div className="p-6 text-sm text-muted-foreground">
-                Your cart is empty.
-              </div>
+              <div className="p-6 text-sm opacity-70">Your cart is empty.</div>
             ) : (
-              <ul className="divide-y">
+              <ul className="divide-y divide-background">
                 {items.map((it) => (
                   <li key={it.id} className="p-4">
                     <div className="flex items-start gap-3">
@@ -175,7 +170,7 @@ export default function CartPopup() {
                         onClick={() => setOpen(false)}
                         className="shrink-0"
                       >
-                        <div className="relative h-16 w-16 rounded-xl overflow-hidden border bg-muted">
+                        <div className="relative h-16 w-16 rounded-xl overflow-hidden border border-background/50 bg-background">
                           <Image
                             src={it.image}
                             alt={it.name}
@@ -197,19 +192,19 @@ export default function CartPopup() {
                         </Link>
 
                         {it.variant && (
-                          <p className="text-xs text-muted-foreground mt-1">
+                          <p className="text-xs opacity-70 mt-1">
                             {it.variant}
                           </p>
                         )}
 
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-sm opacity-80 mt-1">
                           ৳{it.price} × {it.qty}
                         </p>
 
                         {/* Qty controls */}
                         <div className="mt-3 inline-flex items-center gap-2">
                           <button
-                            className="p-2 rounded-full border hover:bg-foreground hover:text-background transition-all cursor-pointer"
+                            className="p-2 rounded-full border border-background/50 hover:bg-background hover:text-foreground transition-all cursor-pointer"
                             onClick={() => dec(it.id)}
                             aria-label="Decrease quantity"
                             type="button"
@@ -222,7 +217,7 @@ export default function CartPopup() {
                           </span>
 
                           <button
-                            className="p-2 rounded-full border hover:bg-foreground hover:text-background transition-all cursor-pointer"
+                            className="p-2 rounded-full border border-background/50 hover:bg-background hover:text-foreground transition-all cursor-pointer"
                             onClick={() => inc(it.id)}
                             aria-label="Increase quantity"
                             type="button"
@@ -236,7 +231,7 @@ export default function CartPopup() {
                       <button
                         type="button"
                         onClick={() => remove(it.id)}
-                        className="p-2 rounded-full border hover:bg-red-600 hover:text-white transition-all cursor-pointer"
+                        className="p-2 rounded-full border border-background/50 hover:bg-red-600 hover:text-white transition-all cursor-pointer"
                         aria-label="Remove item"
                       >
                         <FiTrash2 size={18} />
@@ -249,9 +244,9 @@ export default function CartPopup() {
           </div>
 
           {/* Footer */}
-          <div className="border-t p-4">
+          <div className="border-t border-background/50 p-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Subtotal</span>
+              <span className="opacity-70">Subtotal</span>
               <span className="font-semibold">৳{subtotal}</span>
             </div>
 
@@ -259,7 +254,7 @@ export default function CartPopup() {
               <Link
                 href="/cart"
                 onClick={() => setOpen(false)}
-                className="px-4 py-2 rounded-xl border text-center hover:bg-foreground hover:text-background transition-all"
+                className="px-4 py-2 rounded-xl border border-background/50 text-center hover:bg-background hover:text-foreground transition-all"
               >
                 View Cart
               </Link>
@@ -267,7 +262,7 @@ export default function CartPopup() {
               <Link
                 href="/checkout"
                 onClick={() => setOpen(false)}
-                className="px-4 py-2 rounded-xl bg-foreground text-background text-center hover:opacity-90 transition"
+                className="px-4 py-2 rounded-xl bg-background text-foreground text-center hover:opacity-90 transition"
               >
                 Checkout
               </Link>

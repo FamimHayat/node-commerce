@@ -24,8 +24,8 @@ const BackToTop = () => {
       onClick={scrollToTop}
       aria-label="Back to top"
       className={`fixed  mx-auto items-center bottom-5 right-5 z-50
-        text-5xl lg:text-6xl  hover:scale-110 text-brand 
-        bg-black/30 rounded cursor-pointer
+        text-4xl lg:text-5xl  hover:scale-110 text-brand 
+        border rounded cursor-pointer bg-black/30 md:bg-none 
         transform transition-all duration-300 ease-out
         ${visible ? "opacity-100 scale-100" : "opacity-0 scale-75"}
         hover:bg-brand hover:text-light text-glow text-shadow-light`}

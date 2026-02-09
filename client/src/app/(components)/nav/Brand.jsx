@@ -6,8 +6,8 @@ export default function Brand() {
       href="/"
       className="text-4xl lg:text-5xl font-semibold tracking-tighter text-foreground"
     >
-      <span className="hidden sm:flex">famim hayat</span>
-      <span className="sm:hidden">fh</span>
+      <span className="hidden sm:flex">colon</span>
+      <span className="sm:hidden">cn :</span>
     </Link>
   );
 }
